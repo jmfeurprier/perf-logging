@@ -19,17 +19,6 @@ class ExceptionLogger
     /**
      *
      *
-     * @param \Exception $exception
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->setExceptionFormatter(new ExceptionFormatter());
-    }
-
-    /**
-     *
-     *
      * @param ExceptionFormatter $formatter
      * @return void
      */
@@ -46,8 +35,24 @@ class ExceptionLogger
      */
     public function log(\Exception $exception)
     {
-        $message = $this->exceptionFormatter->format($exception);
+        $message = $this->getExceptionFormatter()->format($exception);
 
         error_log($message);
+    }
+
+    /**
+     *
+     *
+     * @return ExceptionFormatter
+     */
+    private function getExceptionFormatter()
+    {
+        if (!$this->exceptionFormatter) {
+            $exceptionFormatter = new ExceptionFormatter();
+
+            $this->setExceptionFormatter($exceptionFormatter);
+        }
+
+        return $this->exceptionFormatter;
     }
 }

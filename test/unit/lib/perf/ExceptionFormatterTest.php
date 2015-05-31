@@ -14,8 +14,18 @@ class ExceptionFormatterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->formatter = new ExceptionFormatter();
+    }
 
-        $this->exception = $this->getMock('\\Exception');
+    /**
+     *
+     */
+    public function testFormatTakesFileIntoAccount()
+    {
+        $exception = new \Exception();
+
+        $result = $this->formatter->format($exception);
+
+        $this->assertContains($exception->getFile(), $result);
     }
 
     /**
@@ -23,12 +33,41 @@ class ExceptionFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatTakesLineIntoAccount()
     {
-        $line = 123;
+        $exception = new \Exception();
 
-        $this->exception->expects($this->any())->method('getLine')->will($this->returnValue($line));
+        $result = $this->formatter->format($exception);
 
-        $result = $this->formatter->format($this->exception);
+        $this->assertContains((string) $exception->getLine(), $result);
+    }
 
-        $this->assertContains($line, $result);
+    /**
+     *
+     */
+    public function testFormatTakesMessageIntoAccount()
+    {
+        $message = 'foo';
+
+        $exception = new \Exception($message);
+
+        $result = $this->formatter->format($exception);
+
+        $this->assertContains($message, $result);
+    }
+
+    /**
+     *
+     */
+    public function testFormatTakesPreviousExceptionIntoAccount()
+    {
+        $previousMessage = 'foo';
+        $message         = 'bar';
+
+        $previousException = new \Exception($previousMessage);
+
+        $exception = new \Exception($message, 0, $previousException);
+
+        $result = $this->formatter->format($exception);
+
+        $this->assertContains($previousMessage, $result);
     }
 }

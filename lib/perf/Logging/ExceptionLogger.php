@@ -17,12 +17,35 @@ class ExceptionLogger
     private $exceptionFormatter;
 
     /**
+     * Static constructor.
+     *
+     * @return CookieClient
+     */
+    public static function createDefault()
+    {
+        $formatter = new ExceptionFormatter();
+
+        return new self($formatter);
+    }
+
+    /**
+     * Static constructor.
+     *
+     * @param ExceptionFormatter $formatter
+     * @return CookieClient
+     */
+    public static function create(ExceptionFormatter $formatter)
+    {
+        return new self($formatter);
+    }
+
+    /**
      *
      *
      * @param ExceptionFormatter $formatter
      * @return void
      */
-    public function setExceptionFormatter(ExceptionFormatter $formatter)
+    private function __construct(ExceptionFormatter $formatter)
     {
         $this->exceptionFormatter = $formatter;
     }

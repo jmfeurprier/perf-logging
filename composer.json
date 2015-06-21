@@ -2,7 +2,7 @@
 	"name"        : "perf/logging",
 	"type"        : "library",
 	"license"     : "MIT",
-	"description" : "Logging package from perf, the PHP Extensible and Robust Framework",
+	"description" : "Allows to store various events (messages, exceptions, etc) into logs.",
 	"require"     : {
 		"php"          : ">=5.3.3",
 		"ext-mbstring" : "*"
